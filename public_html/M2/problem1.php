@@ -2,7 +2,7 @@
 
 require_once "base.php";
 
-$ucid = "mt85"; // <-- set your ucid
+$ucid = "cle3"; // <-- set your ucid
 
 $array1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 $array2 = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
@@ -21,6 +21,29 @@ function printOdds($arr, $arrayNumber)
 
     echo "Output Array: ";
     // Start Solution Edits
+    
+    // UCID: cle3
+    // Date: 02/16/2025
+    // My goal is to print odd values only in a single line separated by comma's
+    // To do this I need to have find a way to detect odd values
+    // I also need a way to store those values
+    // Finally I need to print said values like the problem wants me to
+    // I may need a loop to iterate through the array
+
+    //Initializing Empty Array to hold Odd Value's
+    $oddArray = [];
+
+    //I am looping through the array looking for odd values
+    
+    for ($a = 0; $a < count($arr); $a++){
+        if ($arr[$a] % 2 !== 0){
+            $oddArray[] = $arr[$a];
+        }
+    }
+
+    // I am printing the odd values separated by commas
+
+    echo implode(", ", $oddArray);
 
 
     // End Solution Edits
