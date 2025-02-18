@@ -25,6 +25,36 @@ function bePositive($arr, $arrayNumber)
     $output = array_fill(0, count($arr), null); // Initialize output array
     // Start Solution Edits
 
+    // UCID: cle3
+    // Date: 02/16/2025
+    // I need to make each value positive
+    // I need to convert it back to its original value
+    // I need to make sure its in the right output 
+    // I could use the abs function to gain a positive value
+    // I could also loop through the array and compare like I did other problems
+
+
+    //Initalizing the loop
+    foreach ($arr as $index => $value) {
+
+    //Making the value positive
+    $positiveValue = abs($value);
+    
+    //Convert to original data type
+    if (is_int($value)) {
+        $output[$index] = (int)$positiveValue;
+    } elseif (is_float($value)) {
+        $output[$index] = (float)$positiveValue;
+    } elseif (is_string($value)) {
+        $output[$index] = (string)$positiveValue;
+    } else {
+        //Catching any outliers 
+        $output[$index] = $positiveValue; 
+    }
+
+    }
+
+    
 
     // End Solution Edits
     echo "<p>Output: </p>";
