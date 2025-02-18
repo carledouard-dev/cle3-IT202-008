@@ -28,11 +28,28 @@ function sumValues($arr, $arrayNumber)
     // Start Solution Edits
     // Solve Challenge 1 here
 
+    // UCID: cle3
+    // Date: 02/16/2025
+    // I need to sum all the values in an array
+    // I also need to have the result given as a 2 decimal float
+    // I need to loop through the array and first sum all the values
+    // Then I need to use some function to have the printed value as a float with 2 decimal places
+    // I may use an empty array to store the summed values
+
+    //First I need to sum all the values in the array and assign it to total
+    foreach ($arr as $value) {
+        $total += $value;
+    }
+
 
 
 
     // Solve Challenge 2 here
     $modifiedTotal = "?";
+
+    // Secondly I have to round it 2 decimal places, and assign it to `modifiedTotal`
+    $modifiedTotal = number_format($total, 2, '.', '');
+
 
     // End Solution Edits
     echo "<p>Total Raw Value: {$total}</p>";
