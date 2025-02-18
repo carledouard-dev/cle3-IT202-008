@@ -2,7 +2,7 @@
 
 require_once "base.php";
 
-$ucid = "mt85"; // <-- set your ucid
+$ucid = "cle3"; // <-- set your ucid
 
 
 $array1 = ["hello world!", "php programming", "special@#$%^&characters", "numbers 123 456", "mIxEd CaSe InPut!"];
@@ -32,7 +32,30 @@ function transformText($arr, $arrayNumber) {
     foreach ($arr as $index => $text) {
         // Start Solution Edits
 
-        
+    // UCID: cle3
+    // Date: 02/16/2025
+    // I need to find a way to identify non-alphanumeric characters(except spaces) and remove them
+    // I need to convert it to Title Text
+    // I need to find out how I can trim leading/trailing spaces and remove duplicate spaces
+    // I also need to assign final phrase to `$placeholderForModifiedPhrase`
+    // I will not be attempting the extra credit, I do not understand how to and I probably need a few days to learn.
+
+    //preg_replace changes specific characters, so it will allow us to change non-alphanumeric characters
+    $text = preg_replace('/[^a-zA-Z0-9\s]/', '', $text);
+
+   //ucwords changes it to Title Text by capitilizing the first letter
+    $text = ucwords(strtolower($text));
+
+    //trimming
+    $text = trim($text);
+
+    //this allows me to remove duplicate spaces
+    $text = preg_replace('/\s+/', ' ', $text);
+
+    //assigning the completed output
+    $placeholderForModifiedPhrase = $text;
+
+
 
         // End Solution Edits
 
