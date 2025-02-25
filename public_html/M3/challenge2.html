@@ -27,7 +27,7 @@ Requirements:
 
 <body>
     <!-- Edit your UCID here -->
-    <header>Header Section (mt85)</header>
+    <header>Header Section (cle3)</header>
     <!-- Don't make any other edits to the HTML -->
     <div class="container">
         <aside id="left-sidebar">
@@ -70,8 +70,107 @@ Requirements:
 
 <script>
     /* Solve the button logic here by finding and attaching an appropriate event listener and logic*/
+
+    /* UCID: cle3
+      Date: 02/24/2025
+      
+      I need to make the content on the page resize so that we don't have empty white spaces on the screen 
+      I also need to make sure that the button displays the content correctly
+   */
+
+    //Making the content on the page resize so that we don't have empty white spaces on the screen 
+    document.querySelector("#left-sidebar button").addEventListener("click", () => toggleSidebar("left-sidebar"));
+    document.querySelector("#right-sidebar button").addEventListener("click", () => toggleSidebar("right-sidebar"));
+
+    function toggleSidebar(sidebarId) {
+        const sidebar = document.getElementById(sidebarId);
+        sidebar.classList.toggle("collapsed");
+
+        const main = document.querySelector("main");
+        if (sidebarId === "left-sidebar") {
+            main.style.marginLeft = sidebar.classList.contains("collapsed") ? "40px" : "15%";
+        } else if (sidebarId === "right-sidebar") {
+            main.style.marginRight = sidebar.classList.contains("collapsed") ? "40px" : "15%";
+        }
+
+        // Force the main content to resize dynamically
+        if (sidebarId === "left-sidebar") {
+            main.style.width = sidebar.classList.contains("collapsed") ? "calc(100% - 40px)" : "calc(100% - 15%)";
+        } else if (sidebarId === "right-sidebar") {
+            main.style.width = sidebar.classList.contains("collapsed") ? "calc(100% - 40px)" : "calc(100% - 15%)";
+        }
+    }
+    
 </script>
 
 <style>
     /* You're free to make whatever edits you need here, just don't override anything in the styles.css */
+
+    /* UCID: cle3
+       Date: 02/24/2025
+       
+      I need to fix text alignment and spacing, so that the content can be displayed and that the buttons work correctly 
+    */
+
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+
+    header {
+        background: #333;
+        color: white;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .container {
+        display: flex;
+        height: calc(100vh - 60px);
+    }
+
+    aside {
+        width: 15%;
+        background: #f4f4f4;
+        padding: 10px;
+        box-sizing: border-box;
+        transition: width 0.3s;
+    }
+
+    main {
+        flex: 1;
+        padding: 10px;
+        box-sizing: border-box;
+        transition: margin 0.3s;
+    }
+
+    aside button {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    aside.collapsed {
+        width: 40px;
+        overflow: hidden; /* Hide overflowing content */
+    }
+
+    aside.collapsed ul {
+        display: none;
+    }
+
+    aside.collapsed button {
+        margin: 0 auto;
+    }
+
+    /* Fix alignment and spacing */
+    aside ul {
+        padding-left: 10px;
+        margin: 0;
+    }
+
+    aside.collapsed ul {
+        padding-left: 0;
+    }
+
 </style>
