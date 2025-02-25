@@ -52,8 +52,89 @@ Requirements:
 
 <script>
     /* Solve the button logic here by finding and attaching an appropriate event listener and logic*/
+
+    /* UCID: cle3
+      Date: 02/24/2025
+      
+     I need to figure out how to attach event listeners to the buttons 
+     I need to cycle through panels(showing one at a time) 
+     I need to make the panels loop when reaching the first or last one. 
+   */
+
+   const carouselContainer = document.querySelector(".carousel-container");
+    const panels = document.querySelectorAll(".panel");
+    const prevButton = document.querySelector("button:first-child");
+    const nextButton = document.querySelector("button:last-child");
+    let currentIndex = 0;
+
+    prevButton.addEventListener("click", () => {
+        currentIndex = (currentIndex - 1 + panels.length) % panels.length;
+        updateCarousel();
+    });
+
+    nextButton.addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % panels.length;
+        updateCarousel();
+    });
+
+    function updateCarousel() {
+        carouselContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
+
+    //Attempting Extra Credit 
+    let isDragging = false;
+    let startX;
+
+    carouselContainer.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        startX = e.clientX;
+    });
+
+
+    
+
 </script>
 
 <style>
     /* You're free to make whatever edits you need here, just don't override anything in the styles.css */
+
+    /* UCID: cle3
+       Date: 02/24/2025
+       
+      I need to position the header at the top
+      I need to make the carousel full width
+      I need to center the buttons. 
+    */
+
+    header {
+        text-align: center;
+        padding: 10px;
+        background: #333;
+        color: white;
+    }
+
+    .carousel {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .carousel-container {
+        display: flex;
+        transition: transform 0.3s;
+    }
+
+    .panel {
+        min-width: 100%;
+        box-sizing: border-box;
+        padding: 20px;
+        text-align: center;
+        background: #f4f4f4;
+        border: 1px solid #ccc;
+    }
+
+    nav {
+        text-align: center;
+        margin: 10px 0;
+    }
+
 </style>
