@@ -19,7 +19,7 @@ Requirements:
 
 <body>
     <!-- Edit your UCID here -->
-    <header>Header Section (mt85)</header>
+    <header>Header Section (cle3)</header>
     <!-- Don't make any other edits to the HTML -->
     <main>
         <div class="content">
@@ -51,6 +51,51 @@ Requirements:
     let header = document.querySelector("header");
     header.innerText += " " + new Date().toLocaleString("en-US");
 </script>
+
 <style>
     /* You're free to make whatever edits you need here, just don't override anything in the styles.css */
+
+    /* UCID: cle3
+       Date: 02/24/2025
+       
+       I need to make sure the header stays fixed at the top
+       The footer needs to stay at the bottom
+       The content area needs to scroll independelty 
+       I need to change the formatting to ensure the header stays at the top and the footer at the bottom
+       I can probably find a command that allows the content area to scroll independelty 
+    */
+
+
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+
+    header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: #333333;
+        color: white;
+        padding: 10px;
+        text-align: center;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: #333;
+        color: white;
+        padding: 10px;
+        text-align: center;
+    }
+
+    main {
+        padding-top: 60px; /* Space for header */
+        padding-bottom: 60px; /* Space for footer */
+        height: 100vh; /* Full viewport height */
+        overflow-y: auto; /* Enable scrolling */
+    }
 </style>
