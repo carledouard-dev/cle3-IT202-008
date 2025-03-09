@@ -21,6 +21,9 @@ if (empty($diff)) {
     // can edit here
     // End validations
 
+    /// UCID: cle3
+    // Date: 03/09/2025
+
     
     if ($is_valid) {
         /*
@@ -28,8 +31,8 @@ if (empty($diff)) {
         Ensure valid and proper PDO named placeholders are used.
         https://phpdelusions.net/pdo
         */
-        $query = ""; // edit this
-        $params = []; // Apply the proper PDO placeholder to variable mapping here
+        $query = 'INSERT INTO todo (task, due, assigned) VALUES (:task, :due, :assigned)'; // edit this
+        $params = [':task' => $task, ':due' => $due, ':assigned' => $assigned]; // Apply the proper PDO placeholder to variable mapping here
         try {
             $db = getDB();
             $stmt = $db->prepare($query);
@@ -44,6 +47,13 @@ if (empty($diff)) {
             // check if the exception was related to a unique constraint
             // provide an appropriate user-friendly message for this scenario
             // Otherwise show the default message below
+
+            if ((string)$e->getCode() === '23000') { //this is a universal unique constraint error exception code
+                 echo "This already exists. Please provide a unique input.";
+            }
+            else{
+                "Error occurred during insertion; please check the logs in terminal";
+            }
             echo "There was an error inserting the record; check the logs (terminal)";
             error_log("Insert Error: " . var_export($e, true)); // shows in the terminal
         }
