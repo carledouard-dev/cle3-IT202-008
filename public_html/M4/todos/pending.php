@@ -17,9 +17,9 @@ if (isset($_POST["id"])) {
     // Date: 03/09/2025
 
 
-    $query = "UPDATE todos SET complete = 1, completed_date = CURRENT_DATE WHERE id = :id AND complete IS NULL"; // edit this
+    $query = "UPDATE M4_Todos SET is_complete = 1, completed = CURRENT_TIMESTAMP WHERE id = :id AND is_complete = 0"; // edit this
     $params = [":id" => $id]; // apply mapping
-    
+
     try {
         $stmt = $db->prepare($query);
         $r = $stmt->execute($params);
@@ -40,7 +40,12 @@ For Actions, this isn't part of the query and there's nothing special to select 
 Filter the results where the todo item is NOT completed and order the results by those due the soonest.
 No limit is required.
 */
-$query = 'SELECT * FROM todos'; // edit this
+$query = "SELECT id, task, due, 
+           DATEDIFF(due, CURDATE()) AS days_offset, 
+           assigned 
+    FROM M4_Todos
+    WHERE is_complete = 0 
+    ORDER BY due ASC"; // edit this
 $results = [];
 try {
     $stmt = $db->prepare($query);

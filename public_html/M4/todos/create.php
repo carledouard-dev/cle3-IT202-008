@@ -18,20 +18,49 @@ if (empty($diff)) {
     // When not valid, provide a user-friendly message of what specifically was wrong and set $is_valid to false.
     // Assigned should check for "self" if a valid format/value isn't provided.
     // Start validations
-    // can edit here
+    $is_valid = true;
+
+    // Validate task
+    if (empty($task)) {
+        echo "Task cannot be empty.<br>";
+        $is_valid = false;
+    } elseif (strlen($task) > 255) { // Assuming task is a VARCHAR(255) in the database
+        echo "Task must be 255 characters or fewer.<br>";
+        $is_valid = false;
+    }
+
+    // Validate due date
+    if (empty($due)) {
+        echo "Due date cannot be empty.<br>";
+        $is_valid = false;
+    } elseif (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $due)) { // Validate MySQL date format (YYYY-MM-DD)
+        echo "Due date must be in the format YYYY-MM-DD.<br>";
+        $is_valid = false;
+    } elseif (strtotime($due) === false) { // Validate that the date is valid
+        echo "Due date is not a valid date.<br>";
+        $is_valid = false;
+    }
+
+    // Validate assigned
+    if (empty($assigned)) {
+        echo "Assigned cannot be empty. Defaulting to 'self'.<br>";
+        $assigned = "self"; // Default to "self" if empty
+    } elseif (strlen($assigned) > 60) { // Assuming assigned is a VARCHAR(60) in the database
+        echo "Assigned must be 60 characters or fewer. Defaulting to 'self'.<br>";
+        $assigned = "self"; // Default to "self" if too long
+    }
     // End validations
 
     /// UCID: cle3
     // Date: 03/09/2025
 
-    
     if ($is_valid) {
         /*
         Design a query to insert the incoming data to the proper columns.
         Ensure valid and proper PDO named placeholders are used.
         https://phpdelusions.net/pdo
         */
-        $query = 'INSERT INTO todo (task, due, assigned) VALUES (:task, :due, :assigned)'; // edit this
+        $query = 'INSERT INTO M4_Todos (task, due, assigned) VALUES (:task, :due, :assigned)'; // edit this
         $params = [':task' => $task, ':due' => $due, ':assigned' => $assigned]; // Apply the proper PDO placeholder to variable mapping here
         try {
             $db = getDB();
@@ -52,9 +81,8 @@ if (empty($diff)) {
                  echo "This already exists. Please provide a unique input.";
             }
             else{
-                "Error occurred during insertion; please check the logs in terminal";
+                echo "Error occurred during insertion; please check the logs in terminal";
             }
-            echo "There was an error inserting the record; check the logs (terminal)";
             error_log("Insert Error: " . var_export($e, true)); // shows in the terminal
         }
     } else {
@@ -72,9 +100,20 @@ if (empty($diff)) {
             <!-- design the form with proper labels and input fields with the correct types based on the SQL table.
              Wrap each label/input pair in a div tag.
              For "Assigned" ensure the default value is "self". -->
-          
             <div>
-                <input type="submit" />
+                <label for="task">Task:</label>
+                <input type="text" id="task" name="task" required maxlength="255" />
+            </div>
+            <div>
+                <label for="due">Due Date:</label>
+                <input type="date" id="due" name="due" required />
+            </div>
+            <div>
+                <label for="assigned">Assigned:</label>
+                <input type="text" id="assigned" name="assigned" value="self" maxlength="60" />
+            </div>
+            <div>
+                <input type="submit" value="Create ToDo" />
             </div>
         </form>
     </section>
