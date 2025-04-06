@@ -16,34 +16,34 @@ require(__DIR__ . "/../../partials/nav.php");
     function validate(form) {
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
-        
         function validate(form) {
-        const email = form.email.value.trim();
-        const password = form.password.value;
+            const email = form.email.value.trim();
+            const password = form.password.value;
 
-        if (!email) {
-            alert("Email is required.");
-            return false;
+            if (!email) {
+                alert("Email is required.");
+                return false;
+            }
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                alert("Please enter a valid email address.");
+                return false;
+            }
+
+            if (!password) {
+                alert("Password is required.");
+                return false;
+            }
+
+            if (password.length < 8) {
+                alert("Password must be at least 8 characters.");
+                return false;
+            }
+
+            return true;
         }
 
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
-            alert("Please enter a valid email address.");
-            return false;
-        }
-
-        if (!password) {
-            alert("Password is required.");
-            return false;
-        }
-
-        if (password.length < 8) {
-            alert("Password must be at least 8 characters.");
-            return false;
-        }
-
-        return true;
-    }
     }
 </script>
 <?php
@@ -104,6 +104,12 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                         } catch (Exception $e) {
                             error_log(var_export($e, true));
                         }
+                        //save roles or empty array
+                        if (isset($roles)) {
+                            $_SESSION["user"]["roles"] = $roles; //at least 1 role
+                        } else {
+                            $_SESSION["user"]["roles"] = []; //no roles
+                        }
                         flash("Welcome, " . get_username());
                         die(header("Location: home.php"));
                     } else {
@@ -119,5 +125,5 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
     }
 }
 ?>
-<?php 
-require(__DIR__."/../../partials/flash.php");
+<?php
+require(__DIR__ . "/../../partials/flash.php");
