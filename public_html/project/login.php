@@ -16,8 +16,34 @@ require(__DIR__ . "/../../partials/nav.php");
     function validate(form) {
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
+        
+        function validate(form) {
+        const email = form.email.value.trim();
+        const password = form.password.value;
+
+        if (!email) {
+            alert("Email is required.");
+            return false;
+        }
+
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            alert("Please enter a valid email address.");
+            return false;
+        }
+
+        if (!password) {
+            alert("Password is required.");
+            return false;
+        }
+
+        if (password.length < 8) {
+            alert("Password must be at least 8 characters.");
+            return false;
+        }
 
         return true;
+    }
     }
 </script>
 <?php
@@ -68,6 +94,16 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                     if (password_verify($password, $hash)) {
                         //flash("Weclome $email");
                         $_SESSION["user"] = $user; //sets our session data from db
+                        try {
+                            //lookup potential roles
+                            $stmt = $db->prepare("SELECT Roles.name FROM Roles 
+                        JOIN UserRoles on Roles.id = UserRoles.role_id 
+                        where UserRoles.user_id = :user_id and Roles.is_active = 1 and UserRoles.is_active = 1");
+                            $stmt->execute([":user_id" => $user["id"]]);
+                            $roles = $stmt->fetchAll(PDO::FETCH_ASSOC); //fetch all since we'll want multiple
+                        } catch (Exception $e) {
+                            error_log(var_export($e, true));
+                        }
                         flash("Welcome, " . get_username());
                         die(header("Location: home.php"));
                     } else {
