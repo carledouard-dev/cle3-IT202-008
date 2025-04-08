@@ -3,6 +3,7 @@
  * Passing $redirect as true will auto redirect a logged out user to the $destination.
  * The destination defaults to login.php
  */
+/* UCID: cle3 | Date: 2025-04-07 | Desc: Handles user helpers */  
 function is_logged_in($redirect = false, $destination = "login.php")
 {
     $isLoggedIn = isset($_SESSION["user"]);

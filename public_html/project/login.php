@@ -1,4 +1,5 @@
 <?php
+/* UCID: cle3 | Date: 2025-04-07 | Desc: Handles user login */  
 require(__DIR__ . "/../../partials/nav.php");
 ?>
 <form onsubmit="return validate(this)" method="POST">
