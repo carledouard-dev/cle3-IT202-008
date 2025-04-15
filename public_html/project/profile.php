@@ -3,6 +3,7 @@ require_once(__DIR__ . "/../../partials/nav.php");
 is_logged_in(true);
 ?>
 <?php
+/* UCID: cle3 | Date: 2025-04-07 | Desc: Handles user profile */  
 if (isset($_POST["save"])) {
     $email = se($_POST, "email", null, false);
     $username = se($_POST, "username", null, false);

@@ -16,9 +16,12 @@ require(__DIR__ . "/sanitizers.php");
 //TODO 3: User helpers
 require(__DIR__ . "/user_helpers.php");
 
-
 //duplicate email/username
 require(__DIR__ . "/duplicate_user_details.php");
 //reset session
 require(__DIR__ . "/reset_session.php");
-?>
+
+// Include get_url.php from Feat-UserRoles branch
+require(__DIR__ . "/get_url.php");
+
+require(__DIR__ . "/api_helper.php");

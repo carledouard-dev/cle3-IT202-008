@@ -3,6 +3,7 @@ require(__DIR__ . "/../../partials/nav.php");
 ?>
 <h1>Home</h1>
 <?php
+/* UCID: cle3 | Date: 2025-04-07 | Desc: Handles user home page */  
 
 if (is_logged_in(true)) {
     //comment this out if you don't want to see the session variables

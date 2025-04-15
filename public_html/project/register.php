@@ -5,7 +5,8 @@ reset_session();
 <form onsubmit="return validate(this)" method="POST">
     <div>
         <label for="email">Email</label>
-        <input type="email" name="email" required />
+        <input type="email" name="email" required 
+        value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>" />
     </div>
     <div>
         <label for="username">Username</label>
@@ -22,6 +23,7 @@ reset_session();
     <input type="submit" value="Register" />
 </form>
 <script>
+    /* UCID: cle3 | Date: 2025-04-07 | Desc: Handles user Registration and Validation */  
     function validate(form) {
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
