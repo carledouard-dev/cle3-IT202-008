@@ -46,5 +46,21 @@ session_start();
         <?php if (is_logged_in()) : ?>
             <li><a href="<?php echo get_url('logout.php'); ?>">Logout</a></li>
         <?php endif; ?>
+        <?php if (has_role("Admin")) : ?>
+    <!-- More Admin links for Milestone2 -->
+    <li><a href="<?php echo get_url('admin/create_scan.php'); ?>">Create Scan</a></li>
+    <li><a href="<?php echo get_url('admin/list_scans.php'); ?>">Scan List</a></li>
+<?php endif; ?>
+<!-- Admin Scan Management -->
+<?php if (has_role("Admin")) : ?>
+    <li><a href="<?php echo get_url('admin/edit_scan.php'); ?>">Create Scan</a></li>
+    <li><a href="<?php echo get_url('admin/delete_scan.php'); ?>">Scan List</a></li>
+<?php endif; ?>
+
+<!-- Regular User Links -->
+<?php if (is_logged_in()) : ?>
+    <li><a href="<?php echo get_url('my_scans.php'); ?>">My Scans</a></li>
+    <li><a href="<?php echo get_url('associate_scan.php'); ?>">Save Scan</a></li>
+<?php endif; ?>
     </ul>
 </nav>
