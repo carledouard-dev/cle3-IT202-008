@@ -1,0 +1,92 @@
+/* === Main Colors === */
+/* UCID: cle3 | Date: 2025-04-07 | Desc: Handles styling the page */  
+/* Discord's color scheme - because yes */
+:root {
+    --bg-dark: #36393f;       /* gray */
+    --bg-darker: #2f3136;     /* darker gray(gray v2) */
+    --text-light: #dcddde;    /* White */
+    --accent: #5865f2;        /* That sweet Discord blurple */
+    --placeholder-gray: #72767d; /* For text that's just... not committed */
+  }
+  
+  /* === Whole Page === */
+  /* Goodbye bad pink, lol.  */
+  body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Helvetica', sans-serif; 
+    padding: 20px; /* Gives the content some personal space */
+    line-height: 1.5; /* Makes text breathe better than I do in meetings */
+  }
+  
+  /* === Input Fields === */
+  input, textarea, select {
+    border-radius: 5px;       /* Rounded corners */
+    border: 1px solid #4f545c; 
+    padding: 10px 12px;      
+    margin-bottom: 15px;     
+    width: 100%;            
+    max-width: 500px;      
+    background-color: var(--bg-darker);
+    color: var(--text-light);
+    font-size: 16px;        /* Readable without having to zoom */
+  }
+  
+  /* === Placeholder Text, thanks for the suggestion! === */
+  ::placeholder {
+    color: var(--placeholder-gray);
+    opacity: 1;            
+    font-style: italic;    
+  }
+  
+  /* === Text Areas === */
+  
+  textarea {
+    min-height: 100px;     
+    resize: vertical;     
+  }
+  
+  /* === Dropdowns === */
+  
+  select {
+    -webkit-appearance: none; /* Bye default arrow */
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2372767d'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;  
+  }
+  
+  /* === Navigation === */
+  
+  nav li {
+    display: inline;
+    background-color: var(--bg-darker);
+    padding: 8px 12px;
+    border-radius: 4px;       /* Slightly rounded */
+    margin-right: 5px;      
+  }
+  nav li a {
+    color: var(--text-light); /* No more hotpink */
+    text-decoration: none;  
+  }
+  nav li:hover {
+    background-color: var(--accent); 
+    cursor: pointer;        
+  }
+  
+  /* === Alerts === */
+  /* For when you need to yell at users politely */
+  .alert-success { background-color: #2d7d46; } /* "Good job!"  */
+  .alert-warning { background-color: #f0b232; } /* "Maybe check this?" */
+  .alert-danger  { background-color: #ed4245; } /* "Oh no!"  */
+  .alert-info    { background-color: var(--accent); } /* "discord of doom lol" blurple */
+  
+  /* === Testing this === */
+
+  input:focus, textarea:focus, select:focus {
+    outline: none;                /* Removes default glow */
+    border-color: var(--accent);  
+    box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.3); /* Adds a Soft glow */
+  }
