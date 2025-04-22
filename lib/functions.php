@@ -1,15 +1,21 @@
 <?php
 //TODO 1: require db.php
 require_once(__DIR__ . "/db.php");
+
+//Im adding this require so the keys are loaded before any function calls
+require_once(__DIR__ . "/load_api_keys.php");
+
 //This is going to be a helper for redirecting to our base project path since it's nested in another folder
 //This MUST match the folder name exactly
 $BASE_PATH = '/project';
 //we moved the flash require higher so following functions have access to it
+
 //TODO 4: Flash Message Helpers
 require(__DIR__ . "/flash_messages.php");
 
 //require safer_echo.php
 require(__DIR__ . "/safer_echo.php");
+
 //TODO 2: filter helpers
 require(__DIR__ . "/sanitizers.php");
 
@@ -18,10 +24,12 @@ require(__DIR__ . "/user_helpers.php");
 
 //duplicate email/username
 require(__DIR__ . "/duplicate_user_details.php");
+
 //reset session
 require(__DIR__ . "/reset_session.php");
 
 // Include get_url.php from Feat-UserRoles branch
 require(__DIR__ . "/get_url.php");
 
+// Adding api_helpers.php 
 require(__DIR__ . "/api_helper.php");
