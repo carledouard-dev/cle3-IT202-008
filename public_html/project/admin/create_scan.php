@@ -1,119 +1,110 @@
 <?php
-// UCID: cle3 Date: 2025-04-22
-// Admin page to create/fetch URL scans via testApi
+// UCID: cle3 | Date: 2025-05-08 | Improved to conserve API calls and redirect cleanly
 require(__DIR__ . "/../../../partials/nav.php");
+require_once(__DIR__ . "/../../../partials/form_helpers.php");
 
 if (!has_role("Admin")) {
-    flash("Permission denied", "warning");
+    flash("You don't have permission to view this page", "warning");
     die(header("Location: $BASE_PATH/home.php"));
 }
 
-// Handle form submission
-if (isset($_POST["action"])) {
+$scan = [];
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $action = se($_POST, "action", "", false);
     $url = se($_POST, "url", "", false);
-    $scan = [];
-    
+
     if (!empty($url)) {
-        if ($_POST["action"] === "fetch") {
-            // Fetch from testApi instead of malicious scanner
-            $testApiUrl = get_url('testApi.php') . '?symbol=' . urlencode($url);
-            $response = file_get_contents($testApiUrl);
-            $result = json_decode($response, true);
-            
-            if ($result && isset($result['data'])) {
-                $scan = [
-                    'api_id' => $result['data']['_id'] ?? null,
-                    'status' => $result['data']['status'],
-                    'category' => $result['data']['category'],
-                    'url' => $result['data']['url'],
-                    'domain' => $result['data']['domain'],
-                    'domain_age' => $result['data']['domain_age'] ?? null,
-                    'is_api' => 1
-                ];
-                flash("Scan fetched successfully via testApi", "success");
+        if ($action === "fetch") {
+            // API call only when confirmed
+            if (isset($_POST["confirm_fetch"])) {
+                $api = get_url('testApi.php') . '?symbol=' . urlencode($url);
+                $response = file_get_contents($api);
+                $result = json_decode($response, true);
+
+                if ($result && isset($result["data"])) {
+                    $scan = [
+                        "api_id" => $result["data"]["_id"] ?? null,
+                        "status" => $result["data"]["status"] ?? "Unknown",
+                        "category" => $result["data"]["category"] ?? "Unknown",
+                        "url" => $result["data"]["url"],
+                        "domain" => $result["data"]["domain"] ?? "",
+                        "domain_age" => $result["data"]["domain_age"] ?? null,
+                        "is_api" => 1
+                    ];
+                    flash("Scan fetched successfully via API", "success");
+                } else {
+                    flash("API fetch failed", "warning");
+                }
             } else {
-                flash("Failed to fetch scan data", "warning");
+                flash("Please confirm API fetch to avoid wasting calls", "warning");
             }
-        } elseif ($_POST["action"] === "create") {
-            // Manual entry remains unchanged
-            $allowed = ["url", "status", "category", "domain", "domain_age"];
-            $scan = array_intersect_key($_POST, array_flip($allowed));
-            $scan["is_api"] = 0;
+        } elseif ($action === "create") {
+            $scan = [
+                "url" => $url,
+                "status" => $_POST["status"] ?? "Unknown",
+                "category" => $_POST["category"] ?? "Unknown",
+                "domain" => $_POST["domain"] ?? "",
+                "domain_age" => !empty($_POST["domain_age"]) ? $_POST["domain_age"] : null,
+                "is_api" => 0
+            ];
         }
-        
-        // Existing DB insertion logic remains the same
+
+        // Save if scan data is ready
         if (!empty($scan)) {
             $db = getDB();
-            $query = "INSERT INTO MaliciousScans (";
-            $query .= implode(",", array_keys($scan)) . ") VALUES (";
-            $query .= ":" . implode(",:", array_keys($scan)) . ")";
-            
+            $cols = array_keys($scan);
+            $query = "INSERT INTO MaliciousScans (" . implode(",", $cols) . ") VALUES (:" . implode(",:", $cols) . ")";
             try {
                 $stmt = $db->prepare($query);
                 $stmt->execute($scan);
                 flash("Scan saved! ID: " . $db->lastInsertId(), "success");
+                die(header("Location: " . get_url("admin/list_scans.php")));
             } catch (PDOException $e) {
-                error_log("DB Error: " . $e->getMessage());
+                error_log("Insert error: " . $e->getMessage());
                 flash("Error saving scan", "danger");
             }
         }
     } else {
-        flash("URL is required", "warning");
+        flash("URL is required", "danger");
     }
 }
 ?>
 
-<!-- REST OF THE FILE REMAINS EXACTLY THE SAME -->
 <div class="container-fluid">
-    <h3>URL Scan Tool</h3>
+    <h3>Scan a URL</h3>
     <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link active" href="#" onclick="switchTab('fetch')">API Scan</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" onclick="switchTab('create')">Manual Entry</a>
-        </li>
+        <li class="nav-item"><a class="nav-link active" href="#" onclick="switchTab('fetch')">Fetch via API</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" onclick="switchTab('create')">Manual Entry</a></li>
     </ul>
-    
-    <!-- API Scan Form -->
-    <div id="fetch" class="tab-target">
+
+    <!-- API Scan Tab -->
+    <div id="fetch" class="tab-target mt-3">
         <form method="POST">
-            <div class="mb-3">
-                <label for="url">URL to Scan</label>
-                <input type="url" name="url" id="url" required 
-                       placeholder="https://example.com" 
-                       value="<?php echo ($_POST['action'] ?? '') === 'fetch' ? se($_POST['url'] ?? '') : ''; ?>">
-            </div>
+            <?php render_input(["type" => "url", "name" => "url", "label" => "URL to Scan", "placeholder" => "https://example.com", "required" => true]); ?>
             <input type="hidden" name="action" value="fetch">
-            <input type="submit" value="Scan URL" class="btn btn-primary">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="confirm_fetch" id="confirm_fetch">
+                <label class="form-check-label" for="confirm_fetch">
+                    No Manual Entry 
+                </label>
+            </div>
+            <?php render_button(["text" => "Fetch Scan (API)", "class" => "btn btn-warning mt-2"]); ?>
         </form>
     </div>
-    
-    <!-- Manual Entry Form -->
-    <div id="create" class="tab-target" style="display:none;">
+
+    <!-- Manual Entry Tab -->
+    <div id="create" class="tab-target mt-3" style="display:none;">
         <form method="POST">
-            <div class="mb-3">
-                <label for="manual_url">URL</label>
-                <input type="url" name="url" id="manual_url" required 
-                       placeholder="https://example.com"
-                       value="<?php echo ($_POST['action'] ?? '') === 'create' ? se($_POST['url'] ?? '') : ''; ?>">
-            </div>
-            <div class="mb-3">
-                <label for="manual_status">Status</label>
-                <select name="status" id="manual_status" required>
-                    <option value="Clean" <?php echo ($_POST['status'] ?? '') === 'Clean' ? 'selected' : ''; ?>>Clean</option>
-                    <option value="Suspicious" <?php echo ($_POST['status'] ?? '') === 'Suspicious' ? 'selected' : ''; ?>>Suspicious</option>
-                    <option value="Malicious" <?php echo ($_POST['status'] ?? '') === 'Malicious' ? 'selected' : ''; ?>>Malicious</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="manual_category">Threat Category</label>
-                <input type="text" name="category" id="manual_category" required 
-                       placeholder="Phishing, Malware, etc"
-                       value="<?php echo ($_POST['action'] ?? '') === 'create' ? se($_POST['category'] ?? '') : ''; ?>">
-            </div>
+            <?php
+            render_input(["type" => "url", "name" => "url", "label" => "URL", "required" => true]);
+            render_input(["type" => "text", "name" => "status", "label" => "Status", "placeholder" => "Clean, Suspicious, Malicious", "required" => true]);
+            render_input(["type" => "text", "name" => "category", "label" => "Category", "placeholder" => "Phishing, Malware, etc", "required" => true]);
+            render_input(["type" => "text", "name" => "domain", "label" => "Domain"]);
+            render_input(["type" => "date", "name" => "domain_age", "label" => "Domain Age"]);
+            ?>
             <input type="hidden" name="action" value="create">
-            <input type="submit" value="Save Scan" class="btn btn-primary">
+            <?php render_button(["text" => "Save Manually", "class" => "btn btn-primary"]); ?>
         </form>
     </div>
 </div>
@@ -127,3 +118,4 @@ if (isset($_POST["action"])) {
 </script>
 
 <?php require_once(__DIR__ . "/../../../partials/flash.php"); ?>
+

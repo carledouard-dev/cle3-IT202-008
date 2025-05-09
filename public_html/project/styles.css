@@ -7,86 +7,159 @@
     --text-light: #dcddde;    /* White */
     --accent: #5865f2;        /* That sweet Discord blurple */
     --placeholder-gray: #72767d; /* For text that's just... not committed */
-  }
-  
-  /* === Whole Page === */
-  /* Goodbye bad pink, lol.  */
-  body {
+}
+
+/* === Whole Page === */
+/* Goodbye bad pink, lol.  */
+body {
     background-color: var(--bg-dark);
     color: var(--text-light);
     font-family: 'Helvetica', sans-serif; 
     padding: 20px; /* Gives the content some personal space */
     line-height: 1.5; /* Makes text breathe better than I do in meetings */
-  }
-  
-  /* === Input Fields === */
-  input, textarea, select {
-    border-radius: 5px;       /* Rounded corners */
-    border: 1px solid #4f545c; 
-    padding: 10px 12px;      
-    margin-bottom: 15px;     
-    width: 100%;            
-    max-width: 500px;      
+}
+
+/* === Input Fields === */
+input, textarea, select {
+    border-radius: 5px;
+    border: 1px solid #4f545c;
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 500px;
     background-color: var(--bg-darker);
     color: var(--text-light);
-    font-size: 16px;        /* Readable without having to zoom */
-  }
-  
-  /* === Placeholder Text, thanks for the suggestion! === */
-  ::placeholder {
+    font-size: 16px;
+}
+
+/* === Placeholder Text, thanks for the suggestion! === */
+::placeholder {
     color: var(--placeholder-gray);
-    opacity: 1;            
-    font-style: italic;    
-  }
-  
-  /* === Text Areas === */
-  
-  textarea {
-    min-height: 100px;     
-    resize: vertical;     
-  }
-  
-  /* === Dropdowns === */
-  
-  select {
-    -webkit-appearance: none; /* Bye default arrow */
+    opacity: 1;
+    font-style: italic;
+}
+
+/* === Text Areas === */
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* === Dropdowns === */
+select {
+    -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2372767d'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 10px center;
-    padding-right: 30px;  
-  }
-  
-  /* === Navigation === */
-  
-  nav li {
+    padding-right: 30px;
+}
+
+/* === Navigation === */
+nav li {
     display: inline;
     background-color: var(--bg-darker);
     padding: 8px 12px;
-    border-radius: 4px;       /* Slightly rounded */
-    margin-right: 5px;      
-  }
-  nav li a {
-    color: var(--text-light); /* No more hotpink */
-    text-decoration: none;  
-  }
-  nav li:hover {
-    background-color: var(--accent); 
-    cursor: pointer;        
-  }
-  
-  /* === Alerts === */
-  /* For when you need to yell at users politely */
-  .alert-success { background-color: #2d7d46; } /* "Good job!"  */
-  .alert-warning { background-color: #f0b232; } /* "Maybe check this?" */
-  .alert-danger  { background-color: #ed4245; } /* "Oh no!"  */
-  .alert-info    { background-color: var(--accent); } /* "discord of doom lol" blurple */
-  
-  /* === Testing this === */
+    border-radius: 4px;
+    margin-right: 5px;
+}
+nav li a {
+    color: var(--text-light);
+    text-decoration: none;
+}
+nav li:hover {
+    background-color: var(--accent);
+    cursor: pointer;
+}
 
-  input:focus, textarea:focus, select:focus {
-    outline: none;                /* Removes default glow */
-    border-color: var(--accent);  
-    box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.3); /* Adds a Soft glow */
-  }
+/* === Alerts === */
+/* So our users can see */
+.alert-success { background-color: #2d7d46; } /* "Good job!" */
+.alert-warning { background-color: #f0b232; } /* "Maybe check this?" */
+.alert-danger  { background-color: #ed4245; } /* "Oh no!" */
+.alert-info    { background-color: var(--accent); } /* "discord of doom lol" blurple */
+
+/* === Input Focus Glow === */
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.3);
+}
+
+/* === Tab Navigation (API vs Manual Entry) === */
+/* Keeps the Discord coloring I like */
+.nav-tabs {
+    border-bottom: 2px solid #4f545c;
+    margin-bottom: 20px;
+}
+
+.nav-tabs .nav-link {
+    color: var(--text-light);
+    background-color: var(--bg-darker);
+    border: 1px solid transparent;
+    border-radius: 5px 5px 0 0;
+    margin-right: 5px;
+    padding: 10px 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover {
+    background-color: #40444b;
+    color: var(--accent);
+}
+
+.nav-tabs .nav-link.active {
+    background-color: var(--accent);
+    color: white;
+    font-weight: bold;
+    border-bottom: none;
+}
+
+/* === Form section glow-up === */
+/* subtle box, clean edges, gentle fade in */
+.tab-target {
+    background-color: #2c2f33;
+    border: 1px solid #4f545c;
+    padding: 20px;
+    border-radius: 0 5px 5px 5px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* === Button upgrade === */
+/* matches blurple */
+.btn {
+    background-color: var(--accent);
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font-weight: 500;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.btn:hover {
+    background-color: #4752c4;
+    color: white;
+}
+
+/* === Checkbox fix because spacing matters === */
+.form-check {
+    margin-top: 10px;
+}
+
+/* === Form label boost === */
+label {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    display: block;
+}
+
+/* === Smooth reveal — because we fancy now === */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+

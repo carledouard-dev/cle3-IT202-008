@@ -28,7 +28,7 @@ function se($v, $k = null, $default = "", $isEcho = true)
         echo htmlspecialchars($returnValue, ENT_QUOTES);
     } else {
         //https://www.php.net/manual/en/function.htmlspecialchars.php
-        return htmlspecialchars($returnValue, ENT_QUOTES);
+        return htmlspecialchars($returnValue ?? "", ENT_QUOTES);
     }
 }
 function safer_echo($v, $k = null, $default = "", $isEcho = true)
