@@ -1,29 +1,32 @@
 <?php
-// UCID: cle3 Date: 04/15/2025
-require(__DIR__ . "/../../../partials/nav.php");
+// UCID: cle3 | Date: 2025-04-15 | Associates a scan to the current user
+require(__DIR__ . "/../../partials/nav.php");
 
 if (!is_logged_in()) {
     flash("You must be logged in to save scans", "warning");
-    die(header("Location: $BASE_PATH/login.php"));
+    header("Location: " . get_url("login.php"));
+    exit;
 }
 
 $scan_id = se($_POST, "scan_id", null, false);
-if ($scan_id === null) {
+if (!$scan_id) {
     flash("Invalid scan ID", "danger");
-    die(header("Location: list_scans.php"));
+    header("Location: " . get_url("admin/list_scans.php"));
+    exit;
 }
 
 $db = getDB();
 try {
-    // Verify scan exists first
+    // Make sure the scan exists
     $stmt = $db->prepare("SELECT 1 FROM MaliciousScans WHERE id = :id");
     $stmt->execute([":id" => $scan_id]);
     if (!$stmt->fetch()) {
         flash("Scan not found", "danger");
-        die(header("Location: list_scans.php"));
+        header("Location: " . get_url("admin/list_scans.php"));
+        exit;
     }
 
-    // Create association
+    // Save scan to the current user
     $stmt = $db->prepare("INSERT INTO UserScans (user_id, scan_id) VALUES (:uid, :sid)");
     $stmt->execute([
         ":uid" => get_user_id(),
@@ -39,4 +42,6 @@ try {
     }
 }
 
-die(header("Location: list_scans.php"));
+header("Location: " . get_url("my_scans.php"));
+exit;
+?>

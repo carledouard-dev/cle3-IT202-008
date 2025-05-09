@@ -54,7 +54,7 @@ if (isset($_GET["symbol"])) {
             $result = $decoded;
         }
     } else {
-        $result = ['data' => $cached];
+        $result = ['data' => $cached];   //breaking environment test API fetch call, cached isn't stored correctly 
     }
 
     // Fallback to example data if empty

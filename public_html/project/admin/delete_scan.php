@@ -1,6 +1,7 @@
 <?php
 // UCID: cle3 Date: 04/15/2025
 require(__DIR__ . "/../../../partials/nav.php");
+require_once(__DIR__ . "/../../../partials/form_helpers.php");
 
 if (!has_role("Admin")) {
     flash("Permission denied", "warning");
@@ -18,7 +19,7 @@ if (isset($_POST["confirm"])) {
     try {
         $stmt = $db->prepare("DELETE FROM MaliciousScans WHERE id = :id");
         $stmt->execute([":id" => $id]);
-        
+
         if ($stmt->rowCount() > 0) {
             flash("Scan deleted successfully", "success");
         } else {
@@ -37,7 +38,7 @@ if (isset($_POST["confirm"])) {
     <p>Are you sure you want to delete this scan? This action cannot be undone.</p>
     <form method="POST">
         <input type="hidden" name="confirm" value="1">
-        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+        <?php render_button(["text" => "Confirm Delete", "type" => "submit", "class" => "btn btn-danger"]); ?>
         <a href="list_scans.php" class="btn btn-secondary">Cancel</a>
     </form>
 </div>

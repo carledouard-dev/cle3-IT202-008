@@ -25,10 +25,27 @@ reset_session();
 <script>
     /* UCID: cle3 | Date: 2025-04-07 | Desc: Handles user Registration and Validation */  
     function validate(form) {
-        //TODO 1: implement JavaScript validation
-        //ensure it returns false for an error and true for success
+        let email = form.email.value.trim();
+        let pw = form.password.value;
+        let confirm = form.confirm.value;
+        let isValid = true;
 
-        return true;
+        if (email.length === 0) {
+            flash("Email is required", "danger");
+            isValid = false;
+        }
+
+        if (pw.length < 8) {
+            flash("Password must be at least 8 characters", "danger");
+            isValid = false;
+        }
+
+        if (pw !== confirm) {
+            flash("Passwords must match", "danger");
+            isValid = false;
+        }
+
+        return isValid;
     }
 </script>
 <?php
