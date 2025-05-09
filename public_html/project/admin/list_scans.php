@@ -106,7 +106,7 @@ try {
                             <?php if (is_logged_in()): ?>
                                 <form method="POST" action="<?= get_url('associate_scan.php'); ?>" style="display:inline-block;">
                                     <input type="hidden" name="scan_id" value="<?php se($scan, 'id'); ?>">
-                                    <button type="submit" class="btn btn-sm btn-outline-success">Save to My Scans</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-success">Save</button>
                                 </form>
                             <?php endif; ?>
                         </td>
